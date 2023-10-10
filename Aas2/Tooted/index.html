@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Objektide Andmebaas</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Objektide Lisamine</h1>
+
+        <form id="lisamiseVorm" class="mt-4">
+            <div class="form-group">
+                <label for="nimi">Nimi:</label>
+                <input type="text" id="nimi" name="nimi" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="hind">Hind:</label>
+                <input type="text" id="hind" name="hind" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="kogus">Kogus:</label>
+                <input type="number" id="kogus" name="kogus" class="form-control" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="lisaObjekt()">Lisa</button>
+        </form>
+
+
+<h2 class="mt-4">Muuda Objekti</h2>
+<form id="muutmiseVorm">
+    <div class="form-group">
+        <label for="muudaNimi">Objekti Nimi:</label>
+        <input type="text" id="muudaNimi" name="muudaNimi" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="uusNimi">Uus Nimi:</label>
+        <input type="text" id="uusNimi" name="uusNimi" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="uusHind">Uus Hind:</label>
+        <input type="text" id="uusHind" name="uusHind" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="uusKogus">Uus Kogus:</label>
+        <input type="number" id="uusKogus" name="uusKogus" class="form-control">
+    </div>
+    <button type="button" class="btn btn-success" onclick="muudaObjekt()">Muuda</button>
+</form>
+
+
+
+        <h2 class="mt-4">Kustuta Objekt</h2>
+        <form id="kustutamiseVorm">
+            <div class="form-group">
+                <label for="kustutaNimi">Objekti Nimi:</label>
+                <input type="text" id="kustutaNimi" name="kustutaNimi" class="form-control">
+            </div>
+            <button type="button" class="btn btn-danger" onclick="kustutaObjekt()">Kustuta</button>
+        </form>
+
+        <h2 class="mt-4">Otsi Objekte</h2>
+        <form id="otsimiseVorm">
+            <div class="form-group">
+                <label for="otsing">Otsi Nime Järgi:</label>
+                <input type="text" id="otsing" name="otsing" class="form-control">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="otsiObjekte()">Otsi</button>
+        </form>
+
+        <h2 class="mt-4">Objektide Nimekiri</h2>
+        <ul id="objektideList" class="list-group">
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        var objektideList = document.getElementById("objektideList");
+        var objektid = [];
+
+        function lisaObjekt() {
+            var nimi = document.getElementById("nimi").value;
+            var hind = document.getElementById("hind").value;
+            var kogus = document.getElementById("kogus").value;
+
+            var uusObjekt = {
+                nimi: nimi,
+                hind: hind,
+                kogus: kogus
+            };
+
+            objektid.push(uusObjekt);
+
+            var listItem = document.createElement("li");
+            listItem.textContent = "Nimi: " + uusObjekt.nimi + ", Hind: " + uusObjekt.hind + ", Kogus: " + uusObjekt.kogus;
+            objektideList.appendChild(listItem);
+
+            document.getElementById("nimi").value = "";
+            document.getElementById("hind").value = "";
+            document.getElementById("kogus").value = "";
+        }
+
+        function muudaObjekt() {
+    var muudaNimi = document.getElementById("muudaNimi").value;
+    var uusNimi = document.getElementById("uusNimi").value;
+    var uusHind = document.getElementById("uusHind").value;
+    var uusKogus = document.getElementById("uusKogus").value;
+
+    for (var i = 0; i < objektid.length; i++) {
+        if (objektid[i].nimi === muudaNimi) {
+            objektid[i].nimi = uusNimi || objektid[i].nimi;
+            objektid[i].hind = uusHind || objektid[i].hind;
+            objektid[i].kogus = uusKogus || objektid[i].kogus;
+
+            var listItem = objektideList.getElementsByTagName("li")[i];
+            listItem.textContent = "Nimi: " + objektid[i].nimi + ", Hind: " + objektid[i].hind + ", Kogus: " + objektid[i].kogus;
+            break;
+        }
+    }
+
+    document.getElementById("muudaNimi").value = "";
+    document.getElementById("uusNimi").value = "";
+    document.getElementById("uusHind").value = "";
+    document.getElementById("uusKogus").value = "";
+}
+
+
+
+        function kustutaObjekt() {
+            var kustutaNimi = document.getElementById("kustutaNimi").value;
+
+            for (var i = 0; i < objektid.length; i++) {
+                if (objektid[i].nimi === kustutaNimi) {
+                    objektid.splice(i, 1);
+
+                    var listItem = objektideList.getElementsByTagName("li")[i];
+                    objektideList.removeChild(listItem);
+                    break;
+                }
+            }
+
+            document.getElementById("kustutaNimi").value = "";
+        }
+
+        function otsiObjekte() {
+            var otsing = document.getElementById("otsing").value.toLowerCase();
+            var otsitudObjektid = [];
+
+            for (var i = 0; i < objektid.length; i++) {
+                var nimi = objektid[i].nimi.toLowerCase();
+
+                if (nimi.includes(otsing)) {
+                    otsitudObjektid.push(objektid[i]);
+                }
+            }
+
+            objektideList.innerHTML = "";
+
+            for (var j = 0; j < otsitudObjektid.length; j++) {
+                var listItem = document.createElement("li");
+                listItem.textContent = "Nimi: " + otsitudObjektid[j].nimi + ", Hind: " + otsitudObjektid[j].hind + ", Kogus: " + otsitudObjektid[j].kogus;
+                objektideList.appendChild(listItem);
+            }
+
+            for (var k = 0; k < objektid.length; k++) {
+                if (!otsitudObjektid.includes(objektid[k])) {
+                    var listItem = document.createElement("li");
+                    listItem.textContent = "Nimi: " + objektid[k].nimi + ", Hind: " + objektid[k].hind + ", Kogus: " + objektid[k].kogus;
+                    objektideList.appendChild(listItem);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

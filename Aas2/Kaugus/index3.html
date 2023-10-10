@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaugushüpe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="display-4">Kaugushüpe</h1>
+
+        <h2 class="mt-4">Lisa uued tulemused:</h2>
+        <form id="add-form">
+            <div class="form-group">
+                <label for="name">Õpilase nimi:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="results">Tulemused (eraldatud komadega):</label>
+                <input type="text" class="form-control" id="results" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="add-button">Lisa</button>
+        </form>
+
+        <h2 class="mt-4">Olemasolevad tulemused:</h2>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Õpilase nimi</th>
+                    <th>Tulemused</th>
+                    <th>Parem tulemus</th>
+                    <th>Keskmine tulemus</th>
+                    <th>Tegevused</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="longjump.js"></script>
+</body>
+</html>
